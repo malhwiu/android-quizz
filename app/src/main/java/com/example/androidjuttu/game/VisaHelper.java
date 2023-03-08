@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -137,7 +136,6 @@ public final class VisaHelper extends SQLiteOpenHelper {
         } else {
             Toast.makeText(this.context.get(),"Kysymysten hakemisessa ilmeni ongelma.",
                     Toast.LENGTH_SHORT).show();
-            // Log.i("Database", "Failed to get data from database.");
         }
         close();
         return new Questions(questions);
@@ -153,9 +151,7 @@ public final class VisaHelper extends SQLiteOpenHelper {
             // Show a message to the user
             Toast.makeText(this.context.get(),"Palvelinta ei löytynyt.",
                           Toast.LENGTH_SHORT).show();
-            // Log.i("Database", "Database doesn't exist.");
         }
-
 
         if (db != null)
             db.close();
@@ -197,32 +193,16 @@ public final class VisaHelper extends SQLiteOpenHelper {
     }
 
     private void CopyDatabase() {
-        try {
-
+        try
+        {
             File file = new File(dbPath, dbName);
             Context Context = context.get();
             Log.i("Db creation", "Tring to put to " +dbPath + dbName);
             CopyFromAssetsToStorage(Context, dbName, dbPath + dbName);
-            //Context context = this.context.get();
-            // this inputStream opens a buffer to the database file
-            /*InputStream cin = this.context.get().getAssets().open(dbName);
-            // This used to write the database to /data/data/myapp/databases on the phone
 
-            FileOutputStream fos = new FileOutputStream(file);
-
-
-            int len;
-            byte[] buf = new byte[1024];
-            // write the database
-            while ((len = cin.read(buf)) > 0)
-                fos.write(buf, 0, len);
-            fos.flush();
-            fos.close();
-
-            cin.close();*/
-
-        } catch (FileNotFoundException e) {
-           //throw new RuntimeException()
+        }
+        catch (FileNotFoundException e)
+        {
             e.printStackTrace();
             Log.i("Database", "Error in writing database to phone. " + e);
         }
