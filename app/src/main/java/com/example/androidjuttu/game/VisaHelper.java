@@ -46,7 +46,6 @@ public final class VisaHelper extends SQLiteOpenHelper {
         this.context = new WeakReference<>(context);
 
         String rootDir = context.getFilesDir().toString() + "/";
-        //rootDir = "/data/data/com.example.androidjuttu/";
         dbPath = rootDir+"db/";
         fullDBPath = dbPath + databaseName;
 
@@ -91,7 +90,7 @@ public final class VisaHelper extends SQLiteOpenHelper {
 
         if (topic == Question.Topic.ALL) {
             query = String.format(Locale.ENGLISH,
-                    "SELECT * FROM tbl_aineisto LIMIT %d;", amount);
+                    "SELECT * FROM tbl_aineisto ORDER BY RANDOM() LIMIT %d;", amount);
         } else {
             query = String.format(Locale.ENGLISH,
                     "SELECT * FROM tbl_aineisto WHERE aihe='%s' LIMIT %d;",
