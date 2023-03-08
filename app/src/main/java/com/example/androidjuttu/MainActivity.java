@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private static int points = 0;
     private static final String dbName = "tiovisa.db";
     public static Questions questions;
-    public static final int numOfQuestions = 3;
+    public static final int numOfQuestions = 5;
     private TextView progress, question;
     private Button topButton, centerButton, bottomButton;
 

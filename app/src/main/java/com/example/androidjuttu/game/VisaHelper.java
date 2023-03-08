@@ -5,10 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
@@ -32,16 +36,21 @@ public final class VisaHelper extends SQLiteOpenHelper {
   */
     private WeakReference<Context> context;
     private static String dbName, dbPath, fullDBPath;
+    private static String rootDir;
     private static final int schemaVersion = 1;
 
+    @SuppressLint("SdCardPath")
     private VisaHelper(Context context, String databaseName) {
 
         super(context, dbName, null, schemaVersion);
         this.context = new WeakReference<>(context);
 
-        //    this.dbPath += this.myContext.getPackageCodePath() + "/databases/";
-        dbPath = "/data/data/com.example.androidjuttu/databases/";
+        String rootDir = context.getFilesDir().toString() + "/";
+        //rootDir = "/data/data/com.example.androidjuttu/";
+        dbPath = rootDir+"db/";
         fullDBPath = dbPath + databaseName;
+
+        createFolderIfNotExists(dbPath);
 
         dbName = databaseName;
 
@@ -162,29 +171,66 @@ public final class VisaHelper extends SQLiteOpenHelper {
         }
     }
 
+    private boolean createFolderIfNotExists(String path) {
+        File folder = new File(path);
+        if (folder.exists())
+            return true;
+        else
+            return folder.mkdirs();
+    }
+
+    private void CopyFromAssetsToStorage(Context Context, String SourceFile, String DestinationFile) throws IOException {
+        InputStream IS = Context.getAssets().open(SourceFile);
+        OutputStream OS = new FileOutputStream(DestinationFile);
+        CopyStream(IS, OS);
+        OS.flush();
+        OS.close();
+        IS.close();
+    }
+
+    private void CopyStream(InputStream Input, OutputStream Output) throws IOException {
+        byte[] buffer = new byte[5120];
+        int length = Input.read(buffer);
+        while (length > 0) {
+            Output.write(buffer, 0, length);
+            length = Input.read(buffer);
+        }
+    }
+
     private void CopyDatabase() {
         try {
 
+            File file = new File(dbPath, dbName);
+            Context Context = context.get();
+            Log.i("Db creation", "Tring to put to " +dbPath + dbName);
+            CopyFromAssetsToStorage(Context, dbName, dbPath + dbName);
             //Context context = this.context.get();
             // this inputStream opens a buffer to the database file
-            InputStream cin = this.context.get().getAssets().open(dbName);
+            /*InputStream cin = this.context.get().getAssets().open(dbName);
             // This used to write the database to /data/data/myapp/databases on the phone
-            OutputStream cout = new FileOutputStream(fullDBPath);
+
+            FileOutputStream fos = new FileOutputStream(file);
+
 
             int len;
             byte[] buf = new byte[1024];
             // write the database
             while ((len = cin.read(buf)) > 0)
-                cout.write(buf, 0, len);
+                fos.write(buf, 0, len);
+            fos.flush();
+            fos.close();
 
-            cout.flush();
-            cout.close();
+            cin.close();*/
 
-            cin.close();
-
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
            //throw new RuntimeException()
-            Log.i("Database", "Error in writing database to phone.");
+            e.printStackTrace();
+            Log.i("Database", "Error in writing database to phone. " + e);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            Log.i("Database", " " + e);
         }
         this.getReadableDatabase();
     }
