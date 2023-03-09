@@ -11,13 +11,16 @@
         android:layout_width="334dp"
         android:layout_height="197dp"
         android:text="Visailu Kysymys"
-        android:textSize="24sp"
+        android:textSize="26sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.033" />
     <!--        tässä text vaihtuisi niiks kysymyksiks-->
+    <!--toi text vois vaihtuu aina siks vastausvaihtoehdoiks?    -->
+    <!--toi painallus on se joka viittaa siihen kun kutsutaan se juttu kun sitä painetaan-->
+
     <Button
         android:id="@+id/Answer3"
         android:layout_width="240dp"
@@ -26,12 +29,10 @@
         android:text="Vastaus"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.514"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.795" />
-    <!--toi text vois vaihtuu aina siks vastausvaihtoehdoiks?    -->
-    <!--toi painallus on se joka viittaa siihen kun kutsutaan se juttu kun sitä painetaan-->
+        app:layout_constraintVertical_bias="0.91" />
 
     <Button
         android:id="@+id/Answer1"
@@ -41,22 +42,23 @@
         android:text="Vastaus"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.514"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.414" />
+        app:layout_constraintVertical_bias="0.634" />
 
     <Button
         android:id="@+id/Answer2"
-        android:layout_width="245dp"
-        android:layout_height="80dp"
+        android:layout_width="240dp"
+        android:layout_height="90dp"
         android:onClick="painallus"
         android:text="Vastaus"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.612" />
+        app:layout_constraintVertical_bias="0.775" />
 
     <TextView
         android:id="@+id/Progress"
