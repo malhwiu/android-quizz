@@ -74,6 +74,8 @@ public final class Question {
         return topic;
     }
 
+
+
     public String getRightAnswer() {
         return rightAnswer;
     }
