@@ -11,6 +11,8 @@ import android.os.Bundle;
 // nää taas yritystä yhdistää tietokantaan.. (ei) saa poistaa :D
 // import android.database.sqlite.SQLiteOpenHelper;
 
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 
@@ -23,6 +25,7 @@ import com.example.androidjuttu.game.VisaHelper;
 import com.example.androidjuttu.scoreactivity.Score;
 
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     // (yritys siitä miten sen yhdistää siihen, ei toimi.)
@@ -33,9 +36,6 @@ public class MainActivity extends AppCompatActivity {
     public static Questions questions;
     public static final int numOfQuestions = 10;
     private TextView progress, ajastin, question;
-
-
-
     private Button topButton, centerButton, bottomButton;
 
     public static int getPoints() {
@@ -113,12 +113,21 @@ public class MainActivity extends AppCompatActivity {
         questions.NextQuestion();
         UpdateView();
     }
-
-    private final int interval = 1000; // 1 Second
-    private Timer handler = new Timer();
-    private Runnable runnable = new Runnable(){
-        public void run() {
-            ajastin.setText((CharSequence) handler);
+    //Alla olevasta linkistä löytyy koodi jolla ajastin pitäisi saada toimimaan
+    //https://stackoverflow.com/questions/6700802/android-timer-updating-a-textview-ui
+    protected static void startTimer() {
+        isTimerRunning = true;
+        timerimer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                elapsedTime += 1; //increase every sec
+                mHandler.obtainMessage(1).sendToTarget();
+            }
+        }, 0, 1000);
+    }
+    public static Handler mHandler = new Handler() {
+        @SuppressLint("HandlerLeak")
+        public void handleMessage(Message msg) {
+            StopWatch.time.setText(formatIntoHHMMSS(elapsedTime)); //this is the textview
         }
     };
 
